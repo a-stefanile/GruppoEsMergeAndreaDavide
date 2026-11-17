@@ -85,8 +85,30 @@ public class Main {
                     discountStrategy = new NormalPayment();
                     break;
             }
+            Ticket ticket = factory.createTicket(ticketType, film);
+            Booking booking = new Booking(ticket, discountStrategy);
+            bookings.add(booking);
+            System.out.println("\n The ticket has been created!");
+            booking.printDetails();
+
+            System.out.print("\nDo you want to book another ticket? (s/n): ");
+            String choice = scanner.nextLine().trim().toLowerCase();
+
+            if (choice.equals("n")) {
+                isOpen = false;
+            }
 
         } while (isOpen);
+
+        System.out.println("Number of tickets : " + bookings.size());
+        double incassoTotale = 0;
+        for (Booking b : bookings) {
+            incassoTotale += b.getFinalPrice();
+        }
+
+        System.out.println("Total money earned: €" + String.format("%.2f", incassoTotale));
+
+        scanner.close();
 
     }
 }
