@@ -1,14 +1,96 @@
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Main {
+
     public static void main(String[] args) {
-        NormalPayment normalPayment = new NormalPayment();
-        ElderlyDiscount elderlyDiscount = new ElderlyDiscount();
-        StudentDiscount studentDiscount = new StudentDiscount();
-        
-        System.out.println(normalPayment.calculateDiscountPrice(12));
-        System.out.println(studentDiscount.calculateDiscountPrice(12));
-        System.out.println(elderlyDiscount.calculateDiscountPrice(12));
+
+        Scanner scanner = new Scanner(System.in);
+
+        List<Booking> bookings = new ArrayList<>();
+
+        TicketFactory factory = new TicketFactory();
+
+        boolean isOpen = true;
+
+        Film film = new Film(
+                "Interstellar",
+                "Sci-Fi",
+                169,
+                "13+"
+        );
+
+        do {
+
+            System.out.println("\n===== CINEMA TICKET SYSTEM =====");
+
+            // Ticket selection
+            String ticketType = "";
+            boolean validTicket = false;
+
+            while (!validTicket) {
+
+                System.out.println("\nChoose your ticket (VIP, Normal, IMAX):");
+
+                ticketType = scanner.nextLine().trim().toLowerCase();
+
+                if (ticketType.equals("vip")
+                        || ticketType.equals("normal")
+                        || ticketType.equals("imax")) {
+
+                    validTicket = true;
+
+                } else {
+                    System.out.println("Invalid ticket, choose a valid one.");
+                }
+            }
+
+            // Discount selection
+            String discount = "";
+            boolean validDiscount = false;
+
+            while (!validDiscount) {
+
+                System.out.println("\nChoose your discount (Normal, Student, Elderly):");
+
+                discount = scanner.nextLine().trim().toLowerCase();
+
+                if (discount.equals("normal")
+                        || discount.equals("student")
+                        || discount.equals("elderly")) {
+
+                    validDiscount = true;
+
+                } else {
+                    System.out.println("Invalid discount, choose a valid one.");
+                }
+            }
+
+            // Strategy selection
+            DiscountStrategy discountStrategy;
+
+            switch (discount) {
+
+                case "student":
+                    discountStrategy = new StudentDiscount();
+                    break;
+
+                case "elderly":
+                    discountStrategy = new ElderlyDiscount();
+                    break;
+
+                default:
+                    discountStrategy = new NormalPayment();
+                    break;
+            }
+
+        } while (isOpen);
+
     }
 }
+
 
 /*
 * Mini Progetto Merge:
